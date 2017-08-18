@@ -59,11 +59,11 @@ class homebridge extends eqLogic {
 			$plugId = $plugin->getId();
 			if ($plugId == 'homebridge') {
 				continue;
-			} else if (in_array($plugId,$plugin_widget)) {
+			} elseif (in_array($plugId,$plugin_widget)) {
 				array_push($PluginToSend, $plugId);
-			} else if (in_array($plugId,$plugin_compatible) && !in_array($plugId,$plugin_widget) && config::byKey('sendToApp', $plugId, 1) == 1){
+			} elseif (in_array($plugId,$plugin_compatible) && !in_array($plugId,$plugin_widget) && config::byKey('sendToApp', $plugId, 1) == 1){
 				array_push($PluginToSend, $plugId);
-			} else if (!in_array($plugId,$plugin_compatible) && config::byKey('sendToApp', $plugId, 0) == 1){
+			} elseif (!in_array($plugId,$plugin_compatible) && config::byKey('sendToApp', $plugId, 0) == 1){
 				$subClasses = config::byKey('subClass', $plugId, '');
 				if ($subClasses != ''){
 					$subClassesList = explode(';',$subClasses);
@@ -103,8 +103,7 @@ class homebridge extends eqLogic {
 		$state = '';
 		if(self::check_ios() == 0){
 			$state = 'ok';
-		}
-		else {
+		} else {
 			if (shell_exec('ls /usr/bin/homebridge 2>/dev/null | wc -l') == 1 || shell_exec('ls /usr/local/bin/homebridge 2>/dev/null | wc -l') == 1) {
 				$state = 'ok';
 			}else{
@@ -502,13 +501,13 @@ class homebridge extends eqLogic {
 							if ($cmd_array['type'] == 'action'){
 								unset($cmd_array['currentValue']);
 							}
-							if ($cmd_array['value'] == null || $cmd_array['value'] == ""){
+							if ($cmd_array['value'] === null || $cmd_array['value'] == ""){
 								//unset($cmd_array['value']);
 								$cmd_array['value'] == "0";
 							}else{
 								$cmd_array['value'] = str_replace("#","",$cmd_array['value']);	
 							}
-							if ($cmd_array['unite'] == null || $cmd_array['unite'] == ""){
+							if ($cmd_array['unite'] === null || $cmd_array['unite'] == ""){
 								unset($cmd_array['unite']);
 							}
 							$cmds_array[] = $cmd_array;
@@ -679,11 +678,11 @@ class homebridge extends eqLogic {
 		$externe = network::getNetworkAccess('external');
 		$user = $this->getConfiguration('affect_user');
 		
-		if($interne == null || $interne == 'http://:80' || $interne == 'https://:80'){
+		if($interne === null || $interne == 'http://:80' || $interne == 'https://:80'){
 			$retour = 'internalError';
-		}else if($externe == null || $externe == 'http://:80' || $externe == 'https://:80'){
+		}elseif($externe === null || $externe == 'http://:80' || $externe == 'https://:80'){
 			$retour = 'externalError';
-		}else if($user == ''){
+		}elseif($user == ''){
 			$retour = 'UserError';
 		}else{
 			$key = $this->getLogicalId();
@@ -718,9 +717,9 @@ class homebridge extends eqLogic {
 			}else{
 				$publish = '{"default": "test", "APNS": "{\"aps\":{\"alert\": {\"title\":\"'.$titre.'\",\"body\":\"'.$message.'\"},\"sound\":\"silence.caf\"}}"}';
 			}
-		}else if($os == 'android'){
+		}elseif($os == 'android'){
 			$publish = '{"default": "Erreur de texte de notification", "GCM": "{ \"data\": {\"notificationId\":\"'.rand(3, 5).'\",\"title\":\"'.$titre.'\",\"text\":\"'.$message.'\",\"vibrate\":\"true\",\"lights\":\"true\" } }"}';
-		}else if($os == 'microsoft'){
+		}elseif($os == 'microsoft'){
 			
 		}
 		return $publish;
@@ -825,4 +824,4 @@ class homebridgeCmd extends cmd {
 	/*     * **********************Getteur Setteur*************************** */
 }
 
-?>
+
