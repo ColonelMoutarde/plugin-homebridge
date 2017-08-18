@@ -93,7 +93,7 @@ class homebridge extends eqLogic {
 	
 	public static function dependancy_info() {
 		$return = ['log' => 'homebridge_update',
-			   'progress_file'] => jeedom::getTmpFolder('homebridge') . '/dependance'];
+			   'progress_file' => jeedom::getTmpFolder('homebridge') . '/dependance'];
 
 		if (shell_exec('ls /usr/bin/homebridge 2>/dev/null | wc -l') == 1 || shell_exec('ls /usr/local/bin/homebridge 2>/dev/null | wc -l') == 1) {
 			$state = 'ok';
