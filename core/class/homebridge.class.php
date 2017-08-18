@@ -92,8 +92,7 @@ class homebridge extends eqLogic {
 	}*/
 	
 	public static function dependancy_info() {
-		$return = array();
-		$return['log'] = 'homebridge_update';
+		$return = ['log' => 'homebridge_update'];
 		//$return['progress_file'] = '/tmp/homebridge_in_progress';
 		$return['progress_file'] = jeedom::getTmpFolder('homebridge') . '/dependance';
 
@@ -163,8 +162,7 @@ class homebridge extends eqLogic {
 			log::add('homebridge', 'error', 'Le PIN Homebridge n\'est pas autorisée par Apple : '.$pin_homebridge);	
 		}
 		
-		$response = array();
-		$response['bridge'] = array();
+		$response = ['bridge' => []];
 		$response['bridge']['name'] = $name_homebridge;
 		$response['bridge']['username'] = $mac_homebridge;
 		$response['bridge']['port'] = 51826;
@@ -183,7 +181,7 @@ class homebridge extends eqLogic {
 		$plateform['apikey'] = $apikey;
 		$plateform['pollerperiod'] = 0.5;
 		$plateform['debugLevel'] = log::getLogLevel('homebridge');
-		$response['platforms'] = array();
+		$response['platforms'] = [];
 		$response['platforms'][] = $plateform;
 
 		// get file and add it if it's valid
@@ -206,17 +204,19 @@ class homebridge extends eqLogic {
 		$fp = fopen(dirname(__FILE__) . '/../../resources/homebridge/config.json', 'w');
 		fwrite($fp, json_encode($response));
 		fclose($fp);
-		if(file_exists(dirname(__FILE__) . '/../../resources/homebridge/config.json')) log::add('homebridge','info','Le fichier config.json de Homebridge existe');
-		else log::add('homebridge','error','Le fichier config.json de Homebridge n\'existe pas');
+		if(file_exists(dirname(__FILE__) . '/../../resources/homebridge/config.json')){
+			log::add('homebridge','info','Le fichier config.json de Homebridge existe');
+		} else {
+			log::add('homebridge','error','Le fichier config.json de Homebridge n\'existe pas');
+		}
 	}
 	
 	public static function deamon_info() {
-		$return = array();
-		$return['log'] = 'homebridge';
-		$return['state'] = 'nok';
+		$return = ['log' => 'homebridge',
+			   'state' => 'nok'];
 
 		$result = exec("ps -eo pid,command | grep ' homebridge' | grep -v grep | awk '{print $1}'");
-		if ($result <> 0) {
+		if ($result != 0) {
             $return['state'] = 'ok';
         }
 		$return['launchable'] = 'ok';
@@ -261,7 +261,7 @@ class homebridge extends eqLogic {
 	}
 	public static function deamon_stop() {
 		$deamon_info = self::deamon_info();
-		if ($deamon_info['state'] <> 'ok') {
+		if ($deamon_info['state'] != 'ok') {
             return true;
         }
         
